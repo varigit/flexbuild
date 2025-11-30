@@ -57,7 +57,7 @@ build_distro_rfs_debian() {
 	fi
 
 	# clean cached packages
-	rm -f $RFSDIR/etc/resolv.conf
+	$sudopt rm -f $RFSDIR/etc/resolv.conf
 	$sudopt chroot $RFSDIR apt clean
 	$sudopt chroot $RFSDIR apt autoclean
 	$sudopt chroot $RFSDIR apt autoremove -y
