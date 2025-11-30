@@ -1182,6 +1182,10 @@ elif [ "$1" = docker-clean ]; then
 	docker ps -a --format "{{.ID}} {{.Image}}" | grep '^.* fbdebian:' | awk '{print $1}' | xargs -r docker rm
 	echo "Done"
 	exit
+elif [ "$1" = toolchain-setup ]; then
+	$FBDIR/tools/toolchain_manager setup; exit
+elif [ "$1" = toolchain-check ]; then
+	$FBDIR/tools/toolchain_manager check; exit
 elif [ "$1" = connect ]; then
     host_connect_target $2 $3; exit
 elif [ "$1" = disconnect ]; then
