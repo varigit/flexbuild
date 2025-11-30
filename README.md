@@ -104,6 +104,7 @@ Most used example with separate command:
  bld apps -r debian:server -p LS # compile NXP-specific components against the runtime dependencies of Debian Server rootfs for LS machines
  bld ml [ -r <type> ]            # compile NXP-specific eIQ AI/ML components against the library dependencies of Debian rootfs
  bld merge-apps [ -r <type> ]    # merge NXP-specific components into target Debian rootfs (Desktop by default,add '-r debian:server' for Server)
+ bld merge-bootpart-rfs [ -r <type> ]  # merge boot partition files into target Debian rootfs
  bld create_recovery_sdcard_image # Create Variscite recovery sd card (IMAGE_SIZE=5G IMAGE_NAME=example.img)
  bld packrfs [ -r <type> ]       # pack and compress target rootfs as rootfs_xx.tar.zst (or add '-r debian:server' for Server)
  bld packapps [ -r <type> ]      # pack and compress target app components as apps_xx.tar.zst (add '-p LS' for Layerscape platforms)
