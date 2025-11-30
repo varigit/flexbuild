@@ -14,7 +14,7 @@ device (SD/eMMC card or USB/SATA disk) on target board or on host machine.
 
 ## Build Environment
 --------------------
-- **Docker-free build** with local ARM GNU Toolchain (recommended - no Docker required!)
+- Docker-free build with local ARM GNU Toolchain (recommended - no Docker required!)
 - Cross-build in Debian Docker container hosted on x86 Ubuntu or any other distro for arm64 target
 - Cross-build on x86 host machine running Debian 12 for arm64 target
 - Native-build on ARM board running Debian for arm64 target
