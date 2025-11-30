@@ -33,8 +33,16 @@ PKG_GROUPS_ROBOTICS: n
 # default IMX if '-p' option is not specified, change to LS for Layerscape SoC
 DEFAULT_SOC_FAMILY: IMX
 
-# force build in docker environment
-FORCE_BUILD_IN_DOCKER: y
+# force build in docker environment (set to 'n' when using local toolchain)
+FORCE_BUILD_IN_DOCKER: n
+
+# Local toolchain configuration (eliminates Docker requirement)
+# Run 'bld toolchain-setup' or './tools/toolchain_manager setup' to download
+# Supported versions: 11.3.rel1, 12.2.rel1, 12.3.rel1, 13.2.rel1, 13.3.rel1
+# NXP officially supports GCC 11.x, 12.x, 13.x - use 13.3.rel1 for best compatibility
+USE_LOCAL_TOOLCHAIN: y
+TOOLCHAIN_VERSION: "13.3.rel1"
+TOOLCHAIN_DIR: $FBDIR/toolchain
 
 # choose one of the 3 ways to fetch/update repo for various use cases
 UPDATE_REPO_PER_TAG: y
@@ -82,7 +90,7 @@ repo:
 # BSP component repositories
   atf:
     url:  https://github.com/varigit/imx-atf.git
-    commit: bed39c167c883b335d5fc1046ce16e10a611b4c4
+    commit: 3b57a2b9cc3bb103f7ed5d044b1d1a8fcf3a42f6
 
   uboot:
     url:  https://github.com/varigit/uboot-imx.git

@@ -14,15 +14,37 @@ device (SD/eMMC card or USB/SATA disk) on target board or on host machine.
 
 ## Build Environment
 --------------------
+- **Docker-free build** with local ARM GNU Toolchain (recommended - no Docker required!)
 - Cross-build in Debian Docker container hosted on x86 Ubuntu or any other distro for arm64 target
 - Cross-build on x86 host machine running Debian 12 for arm64 target
 - Native-build on ARM board running Debian for arm64 target
 
 ## Host system requirement
+
+### Docker-Free Build (Recommended)
+This fork supports building without Docker by using a locally downloaded ARM GNU Toolchain.
+No root access or Docker installation required!
+
+```bash
+# One-time toolchain setup (downloads ~500MB ARM GCC toolchain)
+bld toolchain-setup
+
+# Or manually:
+./tools/toolchain_manager setup
+
+# Check toolchain status
+bld toolchain-check
+```
+
+The toolchain will be automatically downloaded to `flexbuild/toolchain/` directory.
+Supported GCC versions: 11.x, 12.x, 13.x, 14.x (default: 13.3.rel1)
+
+### Docker-based Build (Alternative)
 - Docker hosted on Ubuntu LTS host (e.g. 22.04, 20.04) or other any distro
   Refer to [docker-setup](docs/FAQ-docker-setup.md)
   User can run 'bld docker' to create a Debian docker and build it in docker.
-- Debian 12 host
+
+### Debian 12 Host
   Refer to [host_requirement](docs/host_requirement.md)
 
 
@@ -95,6 +117,8 @@ Most used example with separate command:
  bld clean-linux                 # clean obsolete linux image
  bld list                        # list enabled machines and supported various components
  bld host-dep                    # automatically install the depended deb packages on host
+ bld toolchain-setup             # download and setup local ARM toolchain (no Docker needed!)
+ bld toolchain-check             # check if local toolchain is installed
 ```
 
 ## More info

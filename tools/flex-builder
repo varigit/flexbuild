@@ -42,6 +42,8 @@ Most used example with separate command:
  bld packrfs [ -r <type> ]       # pack and compress target rootfs as rootfs_xx.tar.zst (or add '-r debian:server' for Server)
  bld packapps [ -r <type> ]      # pack and compress target app components as apps_xx.tar.zst (add '-p LS' for Layerscape platforms)
  bld repo-fetch [ <component> ]  # fetch git repository of all or specified component from remote repos if not exist locally
+ bld toolchain-setup             # download and setup local ARM toolchain (no Docker needed!)
+ bld toolchain-check             # check if local toolchain is installed
  bld docker                      # create or attach docker container to build in docker
  bld docker-clean                # stop and remove the docker container
  bld clean                       # clean all obsolete firmware/linux/apps binary images except distro rootfs
@@ -65,31 +67,79 @@ EOF
 
 
 check_toolchain() {
-    tc_version='11.x or 12.x or 13.x'
+    # Supported toolchain versions (local or system)
+    tc_version='11.x or 12.x or 13.x or 14.x'
+
+    # Check for local toolchain first (downloaded via toolchain_manager)
+    TOOLCHAIN_DIR="${TOOLCHAIN_DIR:-$FBDIR/toolchain}"
+    LOCAL_TOOLCHAIN_BIN="$TOOLCHAIN_DIR/bin"
+
     if [ $DESTARCH = arm32 ] && [ $HOSTARCH = x86_64 -o $HOSTARCH = aarch64 -o $HOSTARCH = i686 ]; then
+	# Try local toolchain first
+	if [ -f "$LOCAL_TOOLCHAIN_BIN/arm-linux-gnueabihf-gcc" ]; then
+	    gccversion=$("$LOCAL_TOOLCHAIN_BIN/arm-linux-gnueabihf-gcc" --version | head -1 | cut -d' ' -f4)
+	    fbprint_n "Using local ARM32 toolchain: $gccversion"
+	    export PATH="$LOCAL_TOOLCHAIN_BIN:$PATH"
+	    export ARCH=arm
+	    export CROSS_COMPILE=arm-linux-gnueabihf-
+	    return 0
+	fi
+
+	# Fall back to system toolchain
 	[ -f /usr/bin/arm-linux-gnueabihf-gcc ] && gccversion=$(arm-linux-gnueabihf-gcc --version | head -1 | cut -d' ' -f4) || gccversion=0
 	if [ $gccversion = 0 ]; then
+	    # Offer to download local toolchain instead of system install
+	    if [ "$USE_LOCAL_TOOLCHAIN" = y ] || [ "$FORCE_LOCAL_TOOLCHAIN" = y ]; then
+		fbprint_w "Local toolchain not found. Run: ./tools/toolchain_manager setup"
+		exit 1
+	    fi
 	    fbprint_w "Installing toolchain for arm32 ..."
+	    fbprint_w "TIP: For Docker-free builds, run: ./tools/toolchain_manager setup"
 	    sudo apt-get install -y crossbuild-essential-armhf gcc-arm-linux-gnueabihf cpp-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 	elif ! echo $tc_version | grep -q `echo $gccversion|cut -d. -f1` && [ $DISTROTYPE != buildroot ]; then
-	    fbprint_w "Please build on Debian $DEBIAN_VERSION host or build in docker (run 'bld docker') to use the verified toolchain"
-	    exit
+	    fbprint_w "System toolchain version $gccversion may cause issues."
+	    fbprint_w "TIP: For verified toolchain without Docker, run: ./tools/toolchain_manager setup"
+	    if [ "$FORCE_LOCAL_TOOLCHAIN" = y ]; then
+		exit 1
+	    fi
 	fi
 	export ARCH=arm
 	export CROSS_COMPILE=arm-linux-gnueabihf-
+
     elif [ $DESTARCH = arm64 ] && [ $HOSTARCH = x86_64 -o $HOSTARCH = armv7l -o $HOSTARCH = i686 ]; then
+	# Try local toolchain first
+	if [ -f "$LOCAL_TOOLCHAIN_BIN/aarch64-linux-gnu-gcc" ]; then
+	    gccversion=$("$LOCAL_TOOLCHAIN_BIN/aarch64-linux-gnu-gcc" --version | head -1 | cut -d' ' -f4)
+	    fbprint_n "Using local ARM64 toolchain: $gccversion"
+	    export PATH="$LOCAL_TOOLCHAIN_BIN:$PATH"
+	    export ARCH=arm64
+	    export CROSS_COMPILE=aarch64-linux-gnu-
+	    return 0
+	fi
+
+	# Fall back to system toolchain
 	[ -f /usr/bin/aarch64-linux-gnu-gcc ] && gccversion=$(aarch64-linux-gnu-gcc --version | head -1 | cut -d' ' -f4) || gccversion=0
 	if [ $gccversion = 0 ]; then
+	    # Offer to download local toolchain instead of system install
+	    if [ "$USE_LOCAL_TOOLCHAIN" = y ] || [ "$FORCE_LOCAL_TOOLCHAIN" = y ]; then
+		fbprint_w "Local toolchain not found. Run: ./tools/toolchain_manager setup"
+		exit 1
+	    fi
 	    fbprint_w "Installing toolchain for arm64 ..."
+	    fbprint_w "TIP: For Docker-free builds, run: ./tools/toolchain_manager setup"
 	    sudo apt-get install -y crossbuild-essential-arm64 gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
 	elif ! echo $tc_version | grep -q `echo $gccversion | cut -d. -f1` &&  [ $DISTROTYPE != buildroot ]; then
-	    fbprint_w "The existing toolchain version $gccversion on this host may result in build failure for some components."
-	    fbprint_w "Please build on Debian $DEBIAN_VERSION or Ubuntu 22.04 host or build in docker (run 'bld docker') to use the verified toolchain version $tc_version"
-	    exit
+	    fbprint_w "System toolchain version $gccversion may cause issues."
+	    fbprint_w "TIP: For verified toolchain without Docker, run: ./tools/toolchain_manager setup"
+	    if [ "$FORCE_LOCAL_TOOLCHAIN" = y ]; then
+		exit 1
+	    fi
 	fi
 	export ARCH=arm64
 	export CROSS_COMPILE=aarch64-linux-gnu-
+
     elif [ $HOSTARCH = aarch64 -o $HOSTARCH = armv7l ]; then
+	# Native compilation on ARM
 	if [ $DESTARCH = arm32 ]; then
 	    export ARCH=arm
 	elif [ $DESTARCH = arm64 ]; then
@@ -720,9 +770,28 @@ check_proxy() {
 }
 
 check_debian_version() {
+    # Skip Debian version check if local toolchain exists (regardless of USE_LOCAL_TOOLCHAIN setting)
+    TOOLCHAIN_DIR="${TOOLCHAIN_DIR:-$FBDIR/toolchain}"
+    if [ -d "$TOOLCHAIN_DIR/bin" ] && [ -f "$TOOLCHAIN_DIR/bin/aarch64-linux-gnu-gcc" ]; then
+	fbprint_n "Local toolchain detected, skipping Debian version check"
+	check_binfmt_qemu 2>/dev/null || true
+	return 0
+    fi
+
+    # Also skip if USE_LOCAL_TOOLCHAIN is set (toolchain will be downloaded on demand)
+    if [ "$USE_LOCAL_TOOLCHAIN" = y ]; then
+	fbprint_n "USE_LOCAL_TOOLCHAIN=y, toolchain will be downloaded if needed"
+	check_binfmt_qemu 2>/dev/null || true
+	return 0
+    fi
+
     if [[ ! -f /etc/os-release ]] || [[ ! `cat /etc/issue | grep -iE '^Debian GNU/Linux 12'` ]]; then
 	if [ "$FORCE_BUILD_IN_DOCKER" = y -a "$FORCE" != y ]; then
-	    fbprint_w "The host is not Debian 12 system, please install docker (refer to docs/FAQ-docker-setup.md) and run 'bld docker' to build in docker" && exit
+	    fbprint_w "The host is not Debian 12 system."
+	    fbprint_w "Options:"
+	    fbprint_w "  1. Run 'bld toolchain-setup' to download local toolchain (no Docker needed)"
+	    fbprint_w "  2. Install docker and run 'bld docker' to build in docker"
+	    exit
 	fi
     else
 	[ -f /usr/bin/lsb_release ] || sudo apt-get install -y lsb-release
@@ -731,7 +800,10 @@ check_debian_version() {
 	result=$(echo "$releaseVersion < $DEBIAN_VERSION" | bc)
 	if [ "$result" -eq "1" ]; then
 	    fbprint_e "The distro version installed on this host is older than Debian $DEBIAN_VERSION"
-	    fbprint_e "please upgrade it or install docker and run 'bld docker' to build in docker" && exit
+	    fbprint_w "Options:"
+	    fbprint_w "  1. Run 'bld toolchain-setup' to download local toolchain (no Docker needed)"
+	    fbprint_w "  2. Install docker and run 'bld docker' to build in docker"
+	    exit
 	else
 	    check_binfmt_qemu
 	fi
@@ -1238,6 +1310,10 @@ case "$1" in
         generate_initrd_cpio; exit;;
     toolchain)
 	build_distro_rfs_buildroot toolchain $DESTARCH; exit;;
+    toolchain-setup)
+	$FBDIR/tools/toolchain_manager setup; exit;;
+    toolchain-check)
+	$FBDIR/tools/toolchain_manager check; exit;;
     boot)
 	generate_bootpartition_tarball; exit;;
     auto|autobuild)
