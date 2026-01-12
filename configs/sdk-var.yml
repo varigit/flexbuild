@@ -454,6 +454,10 @@ repo:
     url:  https://github.com/teg/firmwared.git
     commit: 2e6b5db43d
 
+  var_mii:
+    url:  https://github.com/varigit/var-mii.git
+    commit: 6fba473817e5419a0c3fa661424e4b2bcc17eebd
+
   buildroot:
     url:  https://github.com/buildroot/buildroot.git
     tag:  2024.02.2
