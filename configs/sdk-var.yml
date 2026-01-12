@@ -458,6 +458,10 @@ repo:
     url:  https://github.com/varigit/var-mii.git
     commit: 6fba473817e5419a0c3fa661424e4b2bcc17eebd
 
+  brcm_patchram_plus:
+    url:  https://github.com/varigit/brcm-patchram-plus.git
+    commit: b40c8041a5bcfde9c3165e53e45fcf9130a45303
+
   buildroot:
     url:  https://github.com/buildroot/buildroot.git
     tag:  2024.02.2
