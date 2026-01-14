@@ -17,7 +17,7 @@ openssl:
 	 if [ -d $(FBDIR)/patch/openssl ] && [ ! -f .patchdone ]; then \
 	     git am $(FBDIR)/patch/openssl/*.patch && touch .patchdone; \
 	 fi && \
-	 ./Configure enable-devcryptoeng linux-aarch64 shared \
+	 ./Configure enable-devcryptoeng linux-armv4 shared \
 		     -I$(DESTDIR)/usr/include -I$(PKGDIR)/linux/cryptodev_linux \
 		     --prefix=/usr \
 		     --openssldir=lib/ssl && \
