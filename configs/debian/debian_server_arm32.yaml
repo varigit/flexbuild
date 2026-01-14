@@ -151,4 +151,6 @@ mmdebstrap:
     - 'printf " * Support:   https://www.nxp.com/support\n" >> $1/etc/update-motd.d/20-help-text'
     - 'printf " * Licensing: https://lsdk.github.io/eula\n" >> $1/etc/update-motd.d/20-help-text'
     - 'printf "NXP Linux SDK 2412 Debian Server (optimized with NXP-specific hardware acceleration)\n" >> $1/etc/issue'
+    - 'chroot "$1" update-alternatives --set iptables /usr/sbin/iptables-legacy'
+    - 'chroot "$1" update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy'
     - 'printf "Build: `date --rfc-3339 seconds`\n" >> $1/etc/buildinfo'
