@@ -336,7 +336,6 @@ create_recovery_sdcard_image_add_installer() {
 
 	# Validate required environment variables
 	for varname in \
-		INSTALL_DEBIAN_SCRIPT \
 		INSTALL_DEBIAN_TARGET_BOOT \
 		INSTALL_DEBIAN_TARGET_ROOTFS
 	do
@@ -350,22 +349,10 @@ create_recovery_sdcard_image_add_installer() {
 	mkdir -p "$ROOTFS_DIR/usr/bin"
 	mkdir -p "$ROOTFS_DIR/opt/images/Debian"
 
-	# Download the installer script and helper, then make executable
-	curl -fsSL "$INSTALL_DEBIAN_SCRIPT" -o "$ROOTFS_DIR/usr/bin/install_debian.sh" || {
-		echo "Error: Failed to fetch installer script." >&2
-		return 1
-	}
 	curl -fsSL "$INSTALL_DEBIAN_ECHOS" -o "$ROOTFS_DIR/usr/bin/echos.sh" || {
 		echo "Error: Failed to fetch echos script." >&2
 		return 1
 	}
-	chmod +x "$ROOTFS_DIR/usr/bin/install_debian.sh"
-
-	# Replace Yocto path with Debian in the installer script
-	if ! sed -i 's|^IMGS_PATH=/opt/images/Yocto|IMGS_PATH=/opt/images/Debian|' "$ROOTFS_DIR/usr/bin/install_debian.sh"; then
-		echo "Error: Failed to update IMGS_PATH in install_debian.sh" >&2
-		return 1
-	fi
 
 	# Copy bootloader and rootfs files to image directory
 	cp "$FLASH_BIN" "$ROOTFS_DIR/opt/images/Debian/${INSTALL_DEBIAN_TARGET_BOOT}"
