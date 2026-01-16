@@ -15,7 +15,9 @@ brcm_firmware:
 	cd $(BSPDIR)/brcm_firmware/lib/firmware/brcm && \
 	for machine_sel in $(MACHINE_LIST); do \
 		ln -sf brcmfmac4339-sdio.bin brcmfmac4339-sdio.variscite,$$machine_sel.bin && \
-		ln -sf brcmfmac4339-sdio.txt brcmfmac4339-sdio.variscite,$$machine_sel.txt; \
+		ln -sf brcmfmac4339-sdio.txt brcmfmac4339-sdio.variscite,$$machine_sel.txt && \
+		ln -sf brcmfmac43430-sdio.bin brcmfmac43430-sdio.variscite,$$machine_sel.bin && \
+		ln -sf brcmfmac43430-sdio.txt brcmfmac43430-sdio.variscite,$$machine_sel.txt; \
 	done && \
 	mkdir -p $(FBOUTDIR)/bsp/brcm_firmware && \
 	cp -rf $(BSPDIR)/brcm_firmware/lib $(FBOUTDIR)/bsp/brcm_firmware && \
