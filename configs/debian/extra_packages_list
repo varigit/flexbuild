@@ -133,6 +133,7 @@ extra_desktop_devel_packages=" \
     libwayland-bin \
     libasound2-dev \
     gstreamer1.0-libav \
+    gstreamer1.0-tools \
     libgstrtspserver-1.0-0 \
     libgudev-1.0-dev \
     libclutter-1.0-dev \
