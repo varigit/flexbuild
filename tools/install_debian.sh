@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installs Yocto to NAND/eMMC
+# Installs Debian to NAND/eMMC
 set -e
 
 . /usr/bin/echos.sh
@@ -401,7 +401,7 @@ start_udev()
 usage()
 {
 	echo
-	echo "This script installs Yocto on the SOM's internal storage device"
+	echo "This script installs Debian on the SOM's internal storage device"
 	echo
 	echo " Usage: $0 OPTIONS"
 	echo
@@ -417,12 +417,12 @@ usage()
 finish()
 {
 	echo
-	blue_bold_echo "Yocto installed successfully"
+	blue_bold_echo "Debian installed successfully"
 	exit 0
 }
 
 
-blue_underlined_bold_echo "*** Variscite MX6UL/MX6ULL/MX6ULZ/MX7 Yocto eMMC/NAND Recovery ***"
+blue_underlined_bold_echo "*** Variscite MX6UL/MX6ULL/MX6ULZ/MX7 Debian eMMC Recovery ***"
 echo
 
 VARSOMMX7_VARIANT=""
