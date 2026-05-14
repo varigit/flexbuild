@@ -14,6 +14,7 @@ jobs:
       matrix:
         machine:
           - imx6ul-var-dart
+          - imx7-var-som
         rootfs:
           - desktop
     uses: varigit-dev/action-workflows/.github/workflows/flexbuild.yml@dev_flexbuild

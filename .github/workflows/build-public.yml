@@ -26,6 +26,7 @@ jobs:
       matrix:
         machine:
           - imx6ul-var-dart
+          - imx7-var-som
         rootfs:
           - server
           - desktop
