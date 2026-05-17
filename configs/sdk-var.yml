@@ -444,7 +444,7 @@ repo:
 
   meta_variscite_sdk_common:
     url: https://github.com/varigit/meta-variscite-sdk-common.git
-    commit: 31fd47933f01d4bd652554a2d903a97fa8a76ab2
+    commit: 7b45393620f4496b4dfac1b5a71245377a8ccbde
 
 # generic component repositories
   imx_test:
