@@ -46,6 +46,9 @@ define build-uboot-target
 	$(call fbprint_n,"config = $1") && \
 	$(MAKE) -C $(BSPDIR)/uboot -j$(JOBS) O=$$opdir $1 && \
 	$(MAKE) -C $(BSPDIR)/uboot -j$(JOBS) O=$$opdir && \
+	if [ "$(UBOOT_IMX_BINARY)" = "u-boot-with-spl.imx" ] && [ ! -f $$opdir/$(UBOOT_IMX_BINARY) ]; then \
+	    $(MAKE) -C $(BSPDIR)/uboot -j$(JOBS) O=$$opdir $(UBOOT_IMX_BINARY); \
+	fi && \
 	\
 	if echo $1 | grep -iqE 'sdcard|nand'; then \
 	   [ -f $$opdir/u-boot-with-spl-pbl.bin ] && srcbin=u-boot-with-spl-pbl.bin || srcbin=u-boot-with-spl.bin; \
@@ -81,7 +84,7 @@ define build-uboot-target
 	else \
 	    cp $$opdir/$$srcbin $(FBOUTDIR)/bsp/u-boot/$$brd/$$tgtbin ; \
 	fi && \
-	$(MAKE) -C $(BSPDIR)/uboot -j$(JOBS) O=$$opdir u-boot-initial-env && \
+	$(MAKE) -C $(BSPDIR)/uboot -j$(JOBS) O=$$opdir $(UBOOT_INITIAL_ENV) && \
 	set -x && \
 	cd $$opdir && \
 	cp $(UBOOT_INITIAL_ENV) $(DESTDIR)/etc/ && \
