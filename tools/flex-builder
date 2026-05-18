@@ -365,8 +365,14 @@ create_recovery_sdcard_image_add_installer() {
 
 	# Copy kernel image and kernel dtb files to image directory
 	curbrch=`cd $KERNEL_PATH && git branch | grep ^* | cut -d' ' -f2`
-	cp $KERNEL_OUTPUT_PATH/$curbrch/arch/arm/boot/zImage "$ROOTFS_DIR/opt/images/Debian/"
-	cp $KERNEL_OUTPUT_PATH/$curbrch/arch/arm/boot/dts/nxp/imx/imx6ul*var*.dtb "$ROOTFS_DIR/opt/images/Debian/"
+	img_dir="$ROOTFS_DIR/opt/images/Debian"
+	dtb_dir="$KERNEL_OUTPUT_PATH/$curbrch/arch/arm/boot/dts/nxp/imx"
+	cp $KERNEL_OUTPUT_PATH/$curbrch/arch/arm/boot/zImage "$img_dir/"
+	if echo $MACHINE | grep -Eq 'mx6'; then
+		cp "$dtb_dir"/imx6ul*var*.dtb "$img_dir/"
+	elif echo $MACHINE | grep -Eq 'mx7'; then
+		cp "$dtb_dir"/imx7*var*.dtb "$img_dir/"
+	fi
 }
 
 create_recovery_sdcard_image() {
