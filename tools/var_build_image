@@ -41,7 +41,7 @@ build_system() {
 
     for component in $COMPONENTS; do
         echo "Building $component for $MACHINE..."
-        bld -f "$SDK_CONFIG_FILE" -m "$MACHINE" "$component" || \
+        bld -r "$DISTRO" -f "$SDK_CONFIG_FILE" -m "$MACHINE" "$component" || \
             error_exit "Failed to build $component"
     done
 
