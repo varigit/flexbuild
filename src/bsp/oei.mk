@@ -6,6 +6,13 @@
 
 # build OEI binaries for i.MX95 platforms
 
+# OEI DDR Configuration
+#  - DART-MX95 2GB:  lpddr5_2gb_6400mbps_train_timing
+#  - DART-MX95 4GB:  lpddr5_4gb_6400mbps_train_timing
+#  - DART-MX95 8GB:  lpddr5_8gb_6400mbps_train_timing
+#  - DART-MX95 16GB: lpddr5_16gb_6400mbps_train_timing
+OEI_DDR_CONFIG ?= "lpddr5_8gb_6400mbps_train_timing"
+
 oei imx-oei:
 	@[ $${MACHINE:0:5} != imx95 ] && exit || \
 	if [ ! -d $(BSPDIR)/oei ]; then \
@@ -18,6 +25,6 @@ oei imx-oei:
 	cd $(BSPDIR)/oei && \
 	export OEI_CROSS_COMPILE=$(PKGDIR)/apps/utils/cortexm_toolchain_cross/bin/arm-none-eabi- && \
 	make really-clean && \
-	make board=mx95-var-dart DEBUG=0 r=B0 oei=ddr && \
-	make board=mx95-var-dart DEBUG=0 r=B0 oei=tcm && \
+	make board=mx95-var-dart DEBUG=0 DDR_CONFIG=$(OEI_DDR_CONFIG) r=B0 oei=ddr && \
+	make board=mx95-var-dart DEBUG=0 DDR_CONFIG=$(OEI_DDR_CONFIG) r=B0 oei=tcm && \
 	$(call fbprint_d,"IMX OEI for $(MACHINE)")

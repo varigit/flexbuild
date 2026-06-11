@@ -327,7 +327,7 @@ repo:
 
   oei:
     url: https://github.com/varigit/imx-oei.git
-    commit: e5ed3502f14f6e3a889a04175a0ac4c1826233ef
+    commit: 395c4c349cf8db7dbb3df0cfe11fd4d005d40cc0
 
   cogl:
     url:  https://gitlab.gnome.org/Archive/cogl.git
