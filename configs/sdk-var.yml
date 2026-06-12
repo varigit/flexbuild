@@ -123,7 +123,7 @@ repo:
 
   imx_mkimage:
     url:  https://github.com/nxp-imx/imx-mkimage.git
-    commit: 4c2e5b25232f5aa003976ddca9d1d2fb9667beb1
+    commit: be80fadd5e7988214149a2bc48daac1b0950d4c2
 
   seco_bin:
     url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/imx-seco-5.9.4.1-0333596.bin
