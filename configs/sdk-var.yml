@@ -132,7 +132,7 @@ repo:
     url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/imx-sc-firmware-1.17.0-83624b9.bin
 
   firmware_imx_bin:
-    url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.28-994fa14.bin
+    url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.30-3fa84fd.bin
     # /lib/firmware for ddr,hdmi,dp,vpu,easrc,epdc,xcvr,xuvi
 
   imx_firmware:
