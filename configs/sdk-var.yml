@@ -147,7 +147,7 @@ repo:
     url: https://github.com/Ezurio/SonaIF-Release-Packages/releases/download/LRD-REL-12.29.0.22/summit-lwb5-fcc-firmware-12.29.0.22.tar.bz2
 
   fw_ele_bin:
-    url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-ele-imx-2.0.2-89161a8.bin
+    url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-ele-imx-2.0.4-93492e0.bin
 
   fw_upower_bin:
     url:  https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-upower-1.3.1.bin
