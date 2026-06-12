@@ -82,7 +82,7 @@ repo:
 # BSP component repositories
   atf:
     url:  https://github.com/varigit/imx-atf.git
-    commit: 1fd46eeb2c4f30e48ace97c8929033eabe6ac107
+    commit: 340d43238f75cda11e2ef2ac21fc90b4b2f120e6
 
   uboot:
     url:  https://github.com/varigit/uboot-imx.git
