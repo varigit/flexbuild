@@ -6,7 +6,7 @@
 
 # build the System Manager for i.MX5 platforms
 
-SM_PLAT ?= mx95evk
+SM_PLAT ?= dart-mx95
 
 sm imx-sm:
 	@[ $${MACHINE:0:5} != imx95 ] && exit || \

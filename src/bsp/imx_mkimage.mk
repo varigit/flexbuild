@@ -91,7 +91,7 @@ define imx_mkimage_target
 	cp $(BSPDIR)/fw_ele/mx95b0-ahab-container.img $(BSPDIR)/imx_mkimage/iMX95; \
 	cp $(BSPDIR)/oei/build/mx95-var-dart/tcm/oei-m33-tcm.bin $(BSPDIR)/imx_mkimage/iMX95; \
 	cp $(BSPDIR)/oei/build/mx95-var-dart/ddr/oei-m33-ddr.bin $(BSPDIR)/imx_mkimage/iMX95; \
-	cp $(BSPDIR)/sm/build/mx95evk/m33_image.bin $(BSPDIR)/imx_mkimage/iMX95; \
+	cp $(BSPDIR)/sm/build/dart-mx95/m33_image.bin $(BSPDIR)/imx_mkimage/iMX95; \
     fi && \
     cp -f $(BSPDIR)/firmware-imx/firmware/ddr/synopsys/*.bin $(BSPDIR)/imx_mkimage/$$SOC_FAMILY; \
     \
