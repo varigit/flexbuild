@@ -379,7 +379,7 @@ repo:
 
   imx_alsa_plugin:
    url:   https://github.com/nxp-imx/imx-alsa-plugins.git
-   tag:  lf-6.12.20-2.0.0
+   tag:  lf-6.12.49-2.2.0
 
   alsa_lib:
     url:  https://github.com/alsa-project/alsa-lib.git
