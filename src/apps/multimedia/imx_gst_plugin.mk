@@ -57,5 +57,6 @@ imx_gst_plugin:
 	      --cross-file meson.cross \
 	      -Dplatform=$(SOCPLATFORM) && \
 	 ninja -j $(JOBS) -C build_$(DISTROTYPE)_$(ARCH) install && \
+	 sed -i 's|$(RFSDIR)||g' $(DESTDIR)/usr/share/aiur_registry_1.0.arm.cf && \
 	 sed -i 's|$(RFSDIR)||g' $(DESTDIR)/usr/share/beep_registry_1.0.arm.cf && \
 	 $(call fbprint_d,"imx_gst_plugin")
