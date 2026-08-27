@@ -430,11 +430,11 @@ repo:
 
   meta_variscite_bsp_common:
     url: https://github.com/varigit/meta-variscite-bsp-common.git
-    commit: 1f8c1035f2453efab73396ebb671f39b4c6cd59a
+    commit: 3148bb4a349e4d6d8f2cf0e49562a89aa3fec42a
 
   meta_variscite_bsp_imx:
     url: https://github.com/varigit/meta-variscite-bsp-imx.git
-    commit: fc7c265e0cf02ea5243c4ae355822ca3e3494c4f
+    commit: 0dc50d82f64cd4b0457ca408e0795bab4096fea2
 
 # bsp components repositories
   freertos_variscite:
@@ -443,11 +443,11 @@ repo:
 
   meta_variscite_sdk_common:
     url: https://github.com/varigit/meta-variscite-sdk-common.git
-    commit: a8a35c2e8767ffcf14ec9a6cf9b9c8c15ff71241
+    commit: 7b45393620f4496b4dfac1b5a71245377a8ccbde
 
   meta_variscite_sdk_imx:
     url: https://github.com/varigit/meta-variscite-sdk-imx.git
-    commit: d5b8caaca1268e832751b1cccb8d033f9322d2a0
+    commit: 75853a038ec4686bd5b834062ba4987ace8ec816
 
 # generic component repositories
   imx_test:
