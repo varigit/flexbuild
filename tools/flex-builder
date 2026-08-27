@@ -345,28 +345,28 @@ create_recovery_sdcard_image_add_installer() {
 	done
 
 	# Prepare required directories inside the root filesystem
-	mkdir -p "$ROOTFS_DIR/usr/bin"
+	mkdir -p "$ROOTFS_DIR/usr/sbin"
 	mkdir -p "$ROOTFS_DIR/opt/images/Debian"
 
 	# Copy the installer script and helper from a local checkout.
-	cp "$INSTALL_DEBIAN_SCRIPT" "$ROOTFS_DIR/usr/bin/install_debian.sh" || {
+	cp "$INSTALL_DEBIAN_SCRIPT" "$ROOTFS_DIR/usr/sbin/install_debian.sh" || {
 		echo "Error: Failed to copy installer script." >&2
 		return 1
 	}
-	cp "$INSTALL_DEBIAN_ECHOS" "$ROOTFS_DIR/usr/bin/echos.sh" || {
+	cp "$INSTALL_DEBIAN_ECHOS" "$ROOTFS_DIR/usr/sbin/echos.sh" || {
 		echo "Error: Failed to copy echos script." >&2
 		return 1
 	}
-	chmod +x "$ROOTFS_DIR/usr/bin/install_debian.sh"
+	chmod +x "$ROOTFS_DIR/usr/sbin/install_debian.sh"
 
 	# Replace Yocto path with Debian in the installer script
-	if ! sed -i 's|^IMGS_PATH=/opt/images/Yocto|IMGS_PATH=/opt/images/Debian|' "$ROOTFS_DIR/usr/bin/install_debian.sh"; then
+	if ! sed -i 's|^IMGS_PATH=/opt/images/Yocto|IMGS_PATH=/opt/images/Debian|' "$ROOTFS_DIR/usr/sbin/install_debian.sh"; then
 		echo "Error: Failed to update IMGS_PATH in install_debian.sh" >&2
 		return 1
 	fi
 
 	# Replace Yocto string with Debian in the installer script
-	if ! sed -i 's|Yocto|Debian|' "$ROOTFS_DIR/usr/bin/install_debian.sh"; then
+	if ! sed -i 's|Yocto|Debian|' "$ROOTFS_DIR/usr/sbin/install_debian.sh"; then
 		echo "Error: Failed to update Yocto strings in install_debian.sh" >&2
 		return 1
 	fi
@@ -388,8 +388,8 @@ create_recovery_sdcard_image() {
 		echo "Error: meta_variscite_sdk_imx repo ref is not specified in $CONFIGLIST." >&2
 		return 1
 	fi
-	INSTALLER_DIR="$PKGDIR/meta_variscite_sdk_imx/scripts/var_mk_yocto_sdcard/variscite_scripts"
-	INSTALL_DEBIAN_SCRIPT="$INSTALLER_DIR/mx8_install_yocto.sh"
+	INSTALLER_DIR="$PKGDIR/meta_variscite_sdk_imx/recipes-core/var-install-yocto/files"
+	INSTALL_DEBIAN_SCRIPT="$INSTALLER_DIR/imx_v8_install_yocto.sh"
 	INSTALL_DEBIAN_ECHOS="$INSTALLER_DIR/echos.sh"
 
 	# Get paths to input rootfs
