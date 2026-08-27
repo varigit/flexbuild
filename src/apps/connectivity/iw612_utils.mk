@@ -14,7 +14,9 @@ iw612_utils:
 	$(call repo-mngr,fetch,meta_variscite_bsp_common) && \
 	IW612_DIR="$(PKGDIR)/meta_variscite_bsp_imx/recipes-connectivity/iw612-utils/iw612-utils/" && \
 	mkdir -p $(FBOUTDIR)/bsp/iw612_firmware/lib/firmware/nxp && \
-	cp -Prf $(PKGDIR)/meta_variscite_bsp_common/recipes-connectivity/iw612-utils/iw612-utils/var_wifi_mod_para.conf $(FBOUTDIR)/bsp/iw612_firmware/lib/firmware/nxp/ && \
+	install -m 0755 $(PKGDIR)/meta_variscite_bsp_common/recipes-bsp/firmware-imx/firmware-nxp-wifi/var_wifi_mod_para.conf \
+			$(FBOUTDIR)/bsp/iw612_firmware/lib/firmware/nxp/wifi_mod_para.conf && \
+	ln -sfn wifi_mod_para.conf $(FBOUTDIR)/bsp/iw612_firmware/lib/firmware/nxp/var_wifi_mod_para.conf && \
 	install -d $(DESTDIR)/etc/bluetooth/variscite-bt.d && \
 	install -d $(DESTDIR)/etc/openthread/variscite-ot.d && \
 	install -d $(DESTDIR)/etc/wifi/variscite-wifi.d && \
