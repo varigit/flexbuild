@@ -28,7 +28,11 @@ imx_g2d_samples:
 	 $(call repo-mngr,fetch,imx_g2d_samples,apps/graphics) && \
 	 \
 	 if [ ! -f $(DESTDIR)/usr/lib/libg2d.so.2 ]; then \
-	     bld imx_gpu_g2d -r $(DISTROTYPE):$(DISTROVARIANT) -a $(DESTARCH); \
+	     if [[ "$${MACHINE}" == imx8qm* || "$${MACHINE}" == imx8qxp* ]]; then \
+		 bld imx_dpu_g2d -r $(DISTROTYPE):$(DISTROVARIANT) -a $(DESTARCH); \
+	     else \
+		 bld imx_gpu_g2d -r $(DISTROTYPE):$(DISTROVARIANT) -a $(DESTARCH); \
+	     fi; \
 	 fi && \
 	 cd $(GRAPHICSDIR)/imx_g2d_samples && \
 	 sudo cp $(DESTDIR)/usr/lib/{libOpenCL.so*,libSPIRV_viv.so*} $(RFSDIR)/usr/lib && \

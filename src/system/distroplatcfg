@@ -25,12 +25,16 @@ elif [ $soc = imx8mq ]; then
 elif [ $soc = imx8mm ]; then
     ln -sf vsidaemon-IMX8MM /usr/bin/vsidaemon
     ln -sf libg2d-viv-mx8mm.so.2.2.0 /usr/lib/libg2d.so.2
+elif [ $soc = imx8qm -o $soc = imx8qxp ]; then
+    if [ -e /usr/lib/libg2d-dpu.so.2.2.0 ]; then
+	ln -sf libg2d-dpu.so.2.2.0 /usr/lib/libg2d.so.2
+    fi
 elif [ $soc = imx93 ]; then
     ln -sf libg2d-pxp.so.2.2.0 /usr/lib/libg2d.so.2
 fi
 
-if [ $soc = imx8qm -o $soc = imx8qxp ] && [ ! -L /lib/firmware/vpu ]; then
-    ln -sf imx/vpu /lib/firmware/vpu
+if [ $soc = imx8qm -o $soc = imx8qxp ] && [ ! -L /lib/firmware/amphion/vpu ]; then
+    cp -r /lib/firmware/imx/vpu /lib/firmware/amphion/
 fi
 
 if [ $desktop = gnome ] && [ $soc = imx91 -o $soc = imx93 ] && [ -f /usr/lib/libGLESv2.so ]; then

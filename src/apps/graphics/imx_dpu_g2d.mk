@@ -10,6 +10,7 @@
 
 imx_dpu_g2d:
 	@[ $(SOCFAMILY) != IMX -o $(DISTROVARIANT) != desktop ] && exit || \
+	 if [[ "$${MACHINE}" != imx8qm* && "$${MACHINE}" != imx8qxp* ]]; then exit 0; fi; \
 	 $(call fbprint_b,"imx_dpu_g2d") && \
 	 cd $(GRAPHICSDIR) && \
 	 if [ ! -d $(GRAPHICSDIR)/imx_dpu_g2d ]; then \

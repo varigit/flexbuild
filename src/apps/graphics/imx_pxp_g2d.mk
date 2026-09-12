@@ -8,6 +8,7 @@
 
 imx_pxp_g2d:
 	@[ $(SOCFAMILY) != IMX -o $(DISTROVARIANT) = base -o $(DISTROVARIANT) = tiny ] && exit || \
+	 if [[ "$${MACHINE}" == imx8qm* || "$${MACHINE}" == imx8qxp* ]]; then exit 0; fi; \
 	 $(call fbprint_b,"imx_pxp_g2d") && \
 	 $(call repo-mngr,fetch,imx_pxp_g2d,apps/graphics) && \
 	 if [ ! -f $(DESTDIR)/usr/include/linux/pxp_device.h ]; then \
