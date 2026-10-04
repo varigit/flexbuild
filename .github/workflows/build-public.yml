@@ -159,6 +159,13 @@ jobs:
             KERNEL_PROVIDER=${{ matrix.kernel_provider }} bld -r debian:${{ matrix.rootfs }} -m ${{ matrix.machine }} -f sdk-var.yml linux
           '
 
+      - name: Capture kernel version
+        id: kernel-version
+        run: |
+          version=$(docker exec "$CONTAINER_NAME" \
+            make -s --no-print-directory -C components_lsdk2412/linux/linux kernelversion)
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
       - name: Build root filesystem
         run: |
           docker exec "$CONTAINER_NAME" /bin/bash -c '
@@ -197,7 +204,7 @@ jobs:
       - name: Upload packaged recovery image
         uses: actions/upload-artifact@v4
         with:
-          name: debian-bookworm-6.6.52_24.12-${{ matrix.machine }}-${{ matrix.rootfs }}-${{ matrix.kernel_provider }}-${{ steps.short-sha.outputs.value }}
+          name: debian-bookworm-${{ steps.kernel-version.outputs.value }}_24.12-${{ matrix.machine }}-${{ matrix.rootfs }}-${{ matrix.kernel_provider }}-${{ steps.short-sha.outputs.value }}
           path: |
             build_lsdk2412/images/var-recovery-image-${{ matrix.machine }}.img.zst
             build_lsdk2412/images/var-recovery-image-${{ matrix.machine }}.img.bmap
