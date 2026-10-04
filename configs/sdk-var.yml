@@ -450,7 +450,7 @@ repo:
 
   meta_variscite_bsp_imx:
     url: https://github.com/varigit/meta-variscite-bsp-imx.git
-    commit: 279c3f70f0cfa9bfe8b8239e7f048b34f29adfc1
+    commit: 20fe60bf4ed185c4cf6204df551deaae19e236ca
 
   meta_variscite_sdk_common:
     url: https://github.com/varigit/meta-variscite-sdk-common.git
