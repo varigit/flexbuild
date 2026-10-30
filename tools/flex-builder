@@ -350,8 +350,8 @@ create_recovery_sdcard_image_add_installer() {
 	mkdir -p "$ROOTFS_DIR/opt/images/Debian"
 
 	# Install debian installer
-	cp ${FBDIR}/tools/install_debian.sh "$ROOTFS_DIR/usr/bin/"
-	chmod +x "$ROOTFS_DIR/usr/bin/install_debian.sh"
+	cp ${FBDIR}/tools/install_debian.sh "$ROOTFS_DIR/usr/sbin/"
+	chmod +x "$ROOTFS_DIR/usr/sbin/install_debian.sh"
 
 	# Download and install the helper script
 	curl -fsSL "$INSTALL_DEBIAN_ECHOS" -o "$ROOTFS_DIR/usr/bin/echos.sh" || {
